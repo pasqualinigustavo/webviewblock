@@ -82,8 +82,8 @@ class WebViewCustom @JvmOverloads constructor(
             request: WebResourceRequest?,
             error: WebResourceError?
         ) {
-            webView.show(false)
-            loadingCard.show(false)
+//            webView.show(false)
+//            loadingCard.show(false)
             actionError.invoke()
             super.onReceivedError(view, request, error)
         }
@@ -93,8 +93,8 @@ class WebViewCustom @JvmOverloads constructor(
             request: WebResourceRequest?,
             errorResponse: WebResourceResponse?
         ) {
-            webView.show(false)
-            loadingCard.show(false)
+//            webView.show(false)
+//            loadingCard.show(false)
             actionError.invoke()
             super.onReceivedHttpError(view, request, errorResponse)
         }

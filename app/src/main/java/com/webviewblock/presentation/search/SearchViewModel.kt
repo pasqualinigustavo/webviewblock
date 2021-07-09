@@ -1,7 +1,6 @@
 package com.webviewblock.presentation.search
 
 import androidx.lifecycle.MutableLiveData
-import com.webviewblock.app.api.SchedulerProvider
 import com.webviewblock.domain.History
 import com.webviewblock.domain.enums.NavigationEvent
 import com.webviewblock.domain.interactors.GetSettingsUseCase
@@ -15,10 +14,8 @@ import kotlin.collections.ArrayList
 class SearchViewModel
 @Inject constructor(
     private val getSettingsUseCase: GetSettingsUseCase,
-    schedulerProviderFacade: SchedulerProvider,
     @Named(Navigator.DASHBOARD) navigator: Navigator
 ) : BaseViewModel(
-    schedulerProviderFacade,
     navigator
 ) {
 
@@ -31,6 +28,7 @@ class SearchViewModel
     }
 
     private fun getSettings() {
+        historyList.clear()
         historyList.addAll(getSettingsUseCase.execute())
         onLoaded.postValue(getSettingsUseCase.blockImagesPreference())
     }

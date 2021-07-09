@@ -1,7 +1,6 @@
 package com.webviewblock.presentation.settings
 
 import androidx.lifecycle.MutableLiveData
-import com.webviewblock.app.api.SchedulerProvider
 import com.webviewblock.domain.History
 import com.webviewblock.domain.interactors.GetSettingsUseCase
 import com.webviewblock.navigator.Navigator
@@ -12,10 +11,8 @@ import javax.inject.Named
 class SettingsViewModel
 @Inject constructor(
     private val getSettingsUseCase: GetSettingsUseCase,
-    schedulerProviderFacade: SchedulerProvider,
     @Named(Navigator.DASHBOARD) navigator: Navigator
 ) : BaseViewModel(
-    schedulerProviderFacade,
     navigator
 ) {
 
@@ -30,6 +27,7 @@ class SettingsViewModel
     }
 
     private fun getSettings() {
+        historyList.clear()
         historyList.addAll(getSettingsUseCase.execute())
         onLoaded.postValue(getSettingsUseCase.blockImagesPreference())
     }

@@ -1,8 +1,10 @@
 package com.webviewblock.app.repository
 
+import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
 import com.webviewblock.app.SharedPreferenceProvider
 import com.webviewblock.domain.History
+import java.lang.reflect.Type
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,8 +22,8 @@ class LocalSettingsRepository @Inject constructor(private val preferences: Share
         var historyStr = preferences.getString(HISTORY_TAG, EMPTY)
         return try {
             if (!historyStr.isNullOrEmpty()) {
-                val gson = Gson()
-                gson.fromJson<List<History>>(historyStr, History::class.java)
+                val listType: Type = object : TypeToken<List<History?>?>() {}.type
+                Gson().fromJson(historyStr, listType)
             } else {
                 emptyList<History>()
             }

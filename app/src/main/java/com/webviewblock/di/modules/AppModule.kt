@@ -3,8 +3,8 @@ package com.webviewblock.di.modules
 import android.app.Application
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import com.webviewblock.app.*
-import com.webviewblock.app.api.*
+import com.webviewblock.app.SharedPreferenceProvider
+import com.webviewblock.app.WebviewBlockSharedPreferences
 import com.webviewblock.application.WebviewBlockApplication
 import com.webviewblock.di.ViewModelModule
 import com.webviewblock.navigator.Navigator
@@ -17,12 +17,6 @@ import javax.inject.Singleton
 
 @Module(includes = [ViewModelModule::class])
 class AppModule {
-
-    @Singleton
-    @Provides
-    fun provideScheduleProvider(): SchedulerProvider {
-        return SchedulersFacade()
-    }
 
     @Singleton
     @Provides
