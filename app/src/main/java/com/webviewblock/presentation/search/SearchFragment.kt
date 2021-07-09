@@ -4,22 +4,16 @@ package com.webviewblock.presentation.search
 import android.os.Bundle
 import android.view.*
 import android.webkit.URLUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.webviewblock.R
 import com.webviewblock.databinding.FragmentSearchBinding
 import com.webviewblock.presentation.BaseFragment
-import com.webviewblock.presentation.settings.SettingsFragment
-import com.webviewblock.presentation.settings.adapter.HistoryAdapter
 
 class SearchFragment : BaseFragment<SearchViewModel>() {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-    private var adapter: HistoryAdapter? = null
-
-    companion object {
-        val TAG = SettingsFragment::class.java.simpleName
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +30,14 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
     }
 
     override fun setupObservers() {
+
+        viewModel.onLoaded.observe(
+            viewLifecycleOwner,
+            Observer { block ->
+                binding.fragmentSearchWebView.blockImages(block ?: false)
+            }
+        )
+
         binding.fragmentSearchWebView.setup(
             actionUpdate = { url ->
                 url?.let {

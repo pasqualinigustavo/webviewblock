@@ -6,14 +6,12 @@ import com.webviewblock.domain.History
 import com.webviewblock.domain.interactors.GetSettingsUseCase
 import com.webviewblock.navigator.Navigator
 import com.webviewblock.presentation.BaseViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Named
 
 class SettingsViewModel
 @Inject constructor(
-    val getSettingsUseCase: GetSettingsUseCase,
+    private val getSettingsUseCase: GetSettingsUseCase,
     schedulerProviderFacade: SchedulerProvider,
     @Named(Navigator.DASHBOARD) navigator: Navigator
 ) : BaseViewModel(
@@ -32,16 +30,8 @@ class SettingsViewModel
     }
 
     private fun getSettings() {
-        disposables.add(
-            getSettingsUseCase.execute()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { historyListData ->
-                    loading.postValue(false)
-                    historyList.addAll(historyListData)
-                    onLoaded.postValue(getSettingsUseCase.blockImagesPreference())
-                }
-        )
+        historyList.addAll(getSettingsUseCase.execute())
+        onLoaded.postValue(getSettingsUseCase.blockImagesPreference())
     }
 
     fun blockImages(block: Boolean) {

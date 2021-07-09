@@ -2,7 +2,7 @@ package com.webviewblock.domain.interactors
 
 import com.webviewblock.app.repository.LocalSettingsRepository
 import com.webviewblock.domain.History
-import com.webviewblock.util.BehaviourSubjectDecorator
+import java.util.ArrayList
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -11,8 +11,8 @@ class GetSettingsUseCase @Inject constructor(
     var repository: LocalSettingsRepository
 ) {
 
-    fun execute(): BehaviourSubjectDecorator<List<History>> {
-        return repository.history
+    fun execute(): List<History> {
+        return repository.getHistory()
     }
 
     fun blockImagesPreference(): Boolean {
@@ -25,5 +25,9 @@ class GetSettingsUseCase @Inject constructor(
 
     fun clear() {
         repository.clear()
+    }
+
+    fun updateHistory(historyList: ArrayList<History>) {
+        repository.updateHistory(historyList)
     }
 }

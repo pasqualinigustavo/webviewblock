@@ -3,19 +3,12 @@ package com.webviewblock.app.repository
 import com.google.gson.Gson
 import com.webviewblock.app.SharedPreferenceProvider
 import com.webviewblock.domain.History
-import com.webviewblock.util.BehaviourSubjectDecorator
-import io.reactivex.subjects.BehaviorSubject
+import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class LocalSettingsRepository @Inject constructor(val preferences: SharedPreferenceProvider) {
-
-    var history = initHistory()
-
-    fun reset() {
-        history = initHistory()
-    }
+class LocalSettingsRepository @Inject constructor(private val preferences: SharedPreferenceProvider) {
 
     var blockImagesPreference: Boolean
         get() = preferences.getBoolean(BLOCK_IMAGES_TAG, false)
@@ -23,23 +16,22 @@ class LocalSettingsRepository @Inject constructor(val preferences: SharedPrefere
 
     fun clear() = preferences.clearAll()
 
-    private fun initHistory(): BehaviourSubjectDecorator<List<History>> {
-        return object : BehaviourSubjectDecorator<List<History>>(BehaviorSubject.create()) {
-            override fun onNext(t: List<History>) {
-                super.onNext(t)
-                history.onNext(readHistory())
+    fun getHistory(): List<History> {
+        var historyStr = preferences.getString(HISTORY_TAG, EMPTY)
+        return try {
+            if (!historyStr.isNullOrEmpty()) {
+                val gson = Gson()
+                gson.fromJson<List<History>>(historyStr, History::class.java)
+            } else {
+                emptyList<History>()
             }
+        } catch (e: Exception) {
+            emptyList<History>()
         }
     }
 
-    private fun readHistory(): List<History> {
-        var historyStr = preferences.getString(HISTORY_TAG, EMPTY)
-        if(!historyStr.isNullOrEmpty()) {
-            val gson = Gson()
-            return gson.fromJson<List<History>>(historyStr, History::class.java)
-        } else {
-            return emptyList<History>()
-        }
+    fun updateHistory(historyList: ArrayList<History>) {
+        preferences.putString(HISTORY_TAG, Gson().toJson(historyList))
     }
 
     companion object {

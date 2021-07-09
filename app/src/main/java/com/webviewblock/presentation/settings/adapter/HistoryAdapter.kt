@@ -1,13 +1,8 @@
 package com.webviewblock.presentation.settings.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.webviewblock.R
-import com.webviewblock.databinding.ActionbarBinding.inflate
-import com.webviewblock.databinding.FragmentSettingsBinding
 import com.webviewblock.databinding.LayoutEmptyHistoryBinding
 import com.webviewblock.databinding.RowHistoryBinding
 import com.webviewblock.domain.History
@@ -38,20 +33,22 @@ class HistoryAdapter(
         notifyDataSetChanged()
     }
 
-    internal class EmptyViewHolder(val binding: LayoutEmptyHistoryBinding) : RecyclerView.ViewHolder(binding.root)
+    internal class EmptyViewHolder(val binding: LayoutEmptyHistoryBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
-    internal class MessageViewHolder(val binding: RowHistoryBinding) : RecyclerView.ViewHolder(binding.root)
+    internal class MessageViewHolder(val binding: RowHistoryBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is MessageViewHolder) {
             val item = items[position]
 
-            if(holder is MessageViewHolder) {
+            if (holder is MessageViewHolder) {
                 //url
                 val viewHolder = holder as MessageViewHolder
                 viewHolder.binding.rowHistoryTextviewUrl.text = item.url
                 //date
-                //viewHolder.binding.rowHistoryTextviewDate.text = item.date
+                viewHolder.binding.rowHistoryTextviewDate.text = item.time
                 //click
                 viewHolder.binding.root.setOnClickListener {
                     clickListener.invoke(item)

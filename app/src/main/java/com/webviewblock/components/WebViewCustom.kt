@@ -18,13 +18,8 @@ class WebViewCustom @JvmOverloads constructor(
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
     var actionUpdate: ((String?) -> Unit)? = null
     var actionError: (() -> Unit)? = null
-    lateinit var binding: CustomWebviewBinding
-
-    init {
-        binding = CustomWebviewBinding
-            .inflate(LayoutInflater.from(context), this, false)
-
-    }
+    var binding: CustomWebviewBinding = CustomWebviewBinding
+        .inflate(LayoutInflater.from(context), this, false)
 
     fun setup(actionUpdate: (String?) -> Unit, actionError: () -> Unit) {
         this.actionError = actionError
@@ -37,21 +32,18 @@ class WebViewCustom @JvmOverloads constructor(
         binding.customWebview.settings.domStorageEnabled = true
         binding.customWebview.settings.loadWithOverviewMode = true
         binding.customWebview.settings.useWideViewPort = true
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
-            binding.customWebview.evaluateJavascript("enable();", null)
-        } else {
-            binding.customWebview.loadUrl("javascript:enable();")
-        }
-
     }
 
     fun navigateToUrl(url: String, headers: HashMap<String, String>? = null) {
-        headers?.let {
-            binding.customWebview.loadUrl(url, it)
-        }?.run {
+//        headers?.let {
+//            binding.customWebview.loadUrl(url, it)
+//        }?.run {
             binding.customWebview.loadUrl(url)
-        }
+//        }
+    }
+
+    fun blockImages(block: Boolean) {
+
     }
 
     private class Callback(
@@ -74,14 +66,14 @@ class WebViewCustom @JvmOverloads constructor(
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
-            loadingCard.show(true)
-            webView.show(false)
+//            loadingCard.show(true)
+//            webView.show(false)
         }
 
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
-            loadingCard.show(false)
-            webView.show(true)
+//            loadingCard.show(false)
+//            webView.show(true)
             actionUpdate.invoke(url)
         }
 

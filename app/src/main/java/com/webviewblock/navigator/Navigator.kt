@@ -15,11 +15,6 @@ abstract class Navigator(val sharedEvents: SharedEvents) {
             return sharedEvents.navigationEvent
         }
 
-    private val navigationResultEvent: SingleLiveEvent<Serializable>
-        get() {
-            return sharedEvents.navigationResultEvent
-        }
-
     fun observeEvents(owner: LifecycleOwner, navController: NavigationController) {
         navigationEvent.observe(owner, Observer {
             if (owner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED))

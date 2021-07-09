@@ -48,9 +48,10 @@ class SettingsFragment : BaseFragment<SettingsViewModel>() {
         setupRecyclerView()
         viewModel.onLoaded.observe(
             viewLifecycleOwner,
-            Observer { loaded ->
-                    (binding.fragmentSettingsRecyclerviewHistory.adapter as? HistoryAdapter)?.items =
-                            viewModel.historyList().toMutableList()
+            Observer { block ->
+                (binding.fragmentSettingsRecyclerviewHistory.adapter as? HistoryAdapter)?.items =
+                    viewModel.historyList().toMutableList()
+                binding.fragmentSettingsSwitchBlock.isChecked = block ?: false
             }
         )
 
