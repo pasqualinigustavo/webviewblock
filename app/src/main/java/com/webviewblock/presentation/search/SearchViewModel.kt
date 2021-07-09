@@ -38,9 +38,15 @@ class SearchViewModel
     }
 
     fun addToHistory(url: String) {
-        if (!historyList.contains(url)) {
-            historyList.add(History(Date().toString(), url))
-            getSettingsUseCase.updateHistory(historyList)
+        if (!historyList.contains(History("", url))) {
+            historyList.add(0, History(Date().toString(), url))
+            var maxSize = if (historyList.size > MAX_HISTORY) MAX_HISTORY else historyList.size
+            getSettingsUseCase.updateHistory(historyList.subList(0, maxSize).toList())
         }
     }
+
+    companion object {
+        const val MAX_HISTORY = 5
+    }
+
 }

@@ -10,14 +10,18 @@ import android.widget.ProgressBar
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.webviewblock.databinding.CustomWebviewBinding
 import com.webviewblock.util.extensions.show
+import java.io.IOException
+import java.util.*
+import kotlin.collections.HashMap
 
 class WebViewCustom @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
-    var actionUpdate: ((String?) -> Unit)? = null
-    var actionError: (() -> Unit)? = null
+    private var actionUpdate: ((String?) -> Unit)? = null
+    private var actionError: (() -> Unit)? = null
+    private var blockImages = false
     var binding: CustomWebviewBinding = CustomWebviewBinding
         .inflate(LayoutInflater.from(context), this, false)
 
@@ -26,12 +30,19 @@ class WebViewCustom @JvmOverloads constructor(
         this.actionUpdate = actionUpdate
         binding.customWebview.webViewClient =
             Callback(binding.customWebviewLoading, binding.customWebview, actionError, actionUpdate)
+        binding.customWebview.addJavascriptInterface(WebAppInterface(context), NAME)
         binding.customWebview.settings.javaScriptEnabled = true
         binding.customWebview.settings.allowContentAccess = true
         binding.customWebview.settings.allowFileAccess = true
         binding.customWebview.settings.domStorageEnabled = true
         binding.customWebview.settings.loadWithOverviewMode = true
         binding.customWebview.settings.useWideViewPort = true
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+            binding.customWebview.evaluateJavascript("enable();", null)
+        } else {
+            binding.customWebview.loadUrl("javascript:enable();")
+        }
     }
 
     fun navigateToUrl(url: String, headers: HashMap<String, String>? = null) {
@@ -43,7 +54,13 @@ class WebViewCustom @JvmOverloads constructor(
     }
 
     fun blockImages(block: Boolean) {
+        blockImages = block
+    }
 
+    private class WebAppInterface(
+        val mContext: Context
+    ) {
+        //future use
     }
 
     private class Callback(
@@ -75,6 +92,10 @@ class WebViewCustom @JvmOverloads constructor(
 //            loadingCard.show(false)
 //            webView.show(true)
             actionUpdate.invoke(url)
+//            if(blockImages) {
+//                webView.loadUrl("javascript:(function(){ var imgs=document.getElementsByTagName('img');"+
+//                        "for(i=0;i<imgs.length;i++) { imgs[i].style.display='none'; } })()")
+//            }
         }
 
         override fun onReceivedError(
@@ -100,4 +121,7 @@ class WebViewCustom @JvmOverloads constructor(
         }
     }
 
+    companion object {
+        const val NAME = "Android"
+    }
 }

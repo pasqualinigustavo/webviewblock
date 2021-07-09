@@ -27,7 +27,7 @@ class GetSettingsUseCase @Inject constructor(
         repository.clear()
     }
 
-    fun updateHistory(historyList: ArrayList<History>) {
+    fun updateHistory(historyList: List<History>) {
         repository.updateHistory(historyList)
     }
 }

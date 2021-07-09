@@ -32,7 +32,7 @@ class LocalSettingsRepository @Inject constructor(private val preferences: Share
         }
     }
 
-    fun updateHistory(historyList: ArrayList<History>) {
+    fun updateHistory(historyList: List<History>) {
         preferences.putString(HISTORY_TAG, Gson().toJson(historyList))
     }
 
