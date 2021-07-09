@@ -5,7 +5,6 @@ import com.google.gson.Gson
 import com.webviewblock.app.SharedPreferenceProvider
 import com.webviewblock.domain.History
 import java.lang.reflect.Type
-import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 

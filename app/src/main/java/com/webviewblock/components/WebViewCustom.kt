@@ -10,20 +10,21 @@ import android.widget.ProgressBar
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.webviewblock.databinding.CustomWebviewBinding
 import com.webviewblock.util.extensions.show
-import java.io.IOException
-import java.util.*
-import kotlin.collections.HashMap
 
 class WebViewCustom @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
+
+    private lateinit var binding: CustomWebviewBinding
     private var actionUpdate: ((String?) -> Unit)? = null
     private var actionError: (() -> Unit)? = null
-    private var blockImages = false
-    var binding: CustomWebviewBinding = CustomWebviewBinding
-        .inflate(LayoutInflater.from(context), this, false)
+
+    init {
+        binding = CustomWebviewBinding.inflate(LayoutInflater.from(context), this, false)
+        addView(binding.root)
+    }
 
     fun setup(actionUpdate: (String?) -> Unit, actionError: () -> Unit) {
         this.actionError = actionError
@@ -49,12 +50,13 @@ class WebViewCustom @JvmOverloads constructor(
 //        headers?.let {
 //            binding.customWebview.loadUrl(url, it)
 //        }?.run {
-            binding.customWebview.loadUrl(url)
+        binding.customWebview.loadUrl(url)
 //        }
     }
 
     fun blockImages(block: Boolean) {
-        blockImages = block
+//        var webViewClient = binding.customWebview.webViewClient as Callback
+//        webViewClient.setBlockIma(block)
     }
 
     private class WebAppInterface(
@@ -70,8 +72,15 @@ class WebViewCustom @JvmOverloads constructor(
         val actionUpdate: (String?) -> Unit
     ) :
         WebViewClient() {
+
+        var blockImages = false
+
         override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler, er: SslError?) {
             handler.proceed()
+        }
+
+        fun setBlockIma(block: Boolean) {
+            this.blockImages = block
         }
 
         override fun shouldOverrideUrlLoading(
@@ -83,14 +92,14 @@ class WebViewCustom @JvmOverloads constructor(
 
         override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
             super.onPageStarted(view, url, favicon)
-//            loadingCard.show(true)
-//            webView.show(false)
+            loadingCard.show(true)
+            webView.show(false)
         }
 
         override fun onPageFinished(view: WebView?, url: String?) {
             super.onPageFinished(view, url)
-//            loadingCard.show(false)
-//            webView.show(true)
+            loadingCard.show(false)
+            webView.show(true)
             actionUpdate.invoke(url)
 //            if(blockImages) {
 //                webView.loadUrl("javascript:(function(){ var imgs=document.getElementsByTagName('img');"+
@@ -103,8 +112,8 @@ class WebViewCustom @JvmOverloads constructor(
             request: WebResourceRequest?,
             error: WebResourceError?
         ) {
-//            webView.show(false)
-//            loadingCard.show(false)
+            webView.show(false)
+            loadingCard.show(false)
             actionError.invoke()
             super.onReceivedError(view, request, error)
         }
@@ -114,8 +123,8 @@ class WebViewCustom @JvmOverloads constructor(
             request: WebResourceRequest?,
             errorResponse: WebResourceResponse?
         ) {
-//            webView.show(false)
-//            loadingCard.show(false)
+            webView.show(false)
+            loadingCard.show(false)
             actionError.invoke()
             super.onReceivedHttpError(view, request, errorResponse)
         }

@@ -1,9 +1,8 @@
 package com.webviewblock.presentation.search
 
-
 import android.os.Bundle
 import android.view.*
-import android.webkit.URLUtil
+import android.webkit.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.webviewblock.R
@@ -55,7 +54,6 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
                 viewModel.addToHistory(binding.fragmentSearchEdittextUrl.text.toString())
             }
         }
-
     }
 
     private fun validData(): Boolean {
