@@ -1,0 +1,168 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+def versionMajor = 1
+def versionMinor = 0
+def versionRelease = 0
+
+def versionPatch = 1//gitVersion()
+def version = (versionMajor * 1000000) + (versionMinor * 10000) + (versionRelease * 1000) + versionPatch
+
+
+android {
+    compileSdkVersion build_versions.target_sdk
+    buildToolsVersion = build_versions.build_tools
+
+    defaultConfig {
+        applicationId "com.webviewblock"
+        minSdkVersion 21
+        targetSdkVersion build_versions.target_sdk
+        versionCode version
+        versionName "${versionMajor}.${versionMinor}.${versionRelease}.${versionPatch}"
+        multiDexEnabled true
+        vectorDrawables.useSupportLibrary true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+//    signingConfigs {
+//        release {
+//            storeFile file('gomoovecustomer.jks')
+//            storePassword 'android'
+//            keyPassword 'android'
+//            keyAlias = 'brazil'
+//        }
+//        debug {
+//            storeFile file('gomoovecustomer.jks')
+//            storePassword 'android'
+//            keyPassword 'android'
+//            keyAlias = 'brazil'
+//        }
+//    }
+//
+//    buildTypes {
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.release
+//        }
+//
+//        debug {
+//            debuggable true
+//            signingConfig signingConfigs.debug
+//        }
+//    }
+
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    packagingOptions {
+        exclude 'META-INF/rxkotlin.properties'
+    }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests.includeAndroidResources = true
+    }
+
+    sourceSets {
+        androidTest.java.srcDirs += "src/test-common/java"
+        test.java.srcDirs += "src/test-common/java"
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation deps.support.recyclerview
+    implementation deps.support.cardview
+    implementation deps.support.design
+    implementation deps.support.fragment_runtime_ktx
+    implementation deps.support.app_compat
+    implementation deps.support.core_ktx
+
+    implementation deps.kotlin.stdlib
+    implementation deps.kotlin.reflect
+
+    implementation deps.navigation.fragment_ktx
+
+    implementation deps.dagger.runtime
+    implementation deps.dagger.android
+    implementation deps.dagger.android_support
+
+    implementation deps.timber
+
+    implementation deps.lifecycle.runtime
+    implementation deps.lifecycle.viewmodel_savedstate
+    implementation deps.lifecycle.extensions
+    implementation deps.lifecycle.java8
+
+    // RxJava
+    implementation deps.rx.android
+    implementation deps.rx.java
+    implementation deps.rx.kotlin
+
+    kapt deps.glide.compiler
+    implementation deps.glide.runtime
+
+    implementation deps.constraint_layout
+
+    kapt deps.dagger.android_support_compiler
+    kapt deps.dagger.compiler
+    kapt deps.lifecycle.compiler
+
+    androidTestImplementation deps.daggermock.testkotlin
+    androidTestImplementation deps.daggermock.test
+    androidTestImplementation deps.mockito.android
+    androidTestImplementation deps.mockito.core
+    androidTestImplementation deps.kakao.testing
+
+    kaptAndroidTest deps.lifecycle.compiler
+    kaptAndroidTest deps.dagger.compiler
+
+    debugImplementation deps.truth.google
+    androidTestImplementation deps.espresso.core
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation deps.espresso.intents
+    androidTestImplementation(deps.espresso.contrib) {
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude group: 'com.android.support', module: 'design'
+        exclude module: 'recyclerview-v7'
+    }
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
+
+    // Unit testing
+    testImplementation 'junit:junit:4.12'
+    testImplementation deps.nhaarman.mockito
+    testImplementation deps.junit
+    testImplementation deps.mock_web_server
+    testImplementation deps.arch_core.testing
+    testImplementation deps.truth.google
+    testImplementation deps.truth.ext_truth
+    testImplementation deps.mockito.core
+    implementation deps.android.androidx
+    implementation deps.android.androidlifecycle
+
+    implementation "androidx.core:core-ktx:+"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.google.code.gson:gson:2.8.2"
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+}
+
+repositories {
+    maven { url 'https://dl.bintray.com/kotlin/kotlin-eap' }
+    mavenCentral()
+}

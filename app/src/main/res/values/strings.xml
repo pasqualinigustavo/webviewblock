@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WebviewBlock</string>
+
+    <!--fragment_settings.xml-->
+    <string name="fragment_search_hint">Type your URL here</string>
+    <string name="fragment_search_go">Go</string>
+
+    <!--fragment_settings.xml-->
+    <string name="fragment_settings_lbl_block_images">Block Images</string>
+    <string name="fragment_settings_lbl_history">History</string>
+    <string name="fragment_settings_lbl_clear_history">Clear</string>
+
+    <!--layout_empty_history.xml-->
+    <string name="layout_empty_history_lbl_message">Empty history!</string>
+
+    <!--COMMOM MESSAGES-->
+    <string name="msg_field_required">Field required</string>
+    <string name="msg_field_incorrect">Invalid URL</string>
+    <string name="message_close_app">Click again to close</string>
+
+</resources>
