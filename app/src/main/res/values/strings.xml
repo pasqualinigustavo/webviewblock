@@ -5,6 +5,7 @@
     <!--fragment_settings.xml-->
     <string name="fragment_search_hint">Type your URL here</string>
     <string name="fragment_search_go">Go</string>
+    <string name="fragment_search_back">Back</string>
 
     <!--fragment_settings.xml-->
     <string name="fragment_settings_lbl_block_images">Block Images</string>

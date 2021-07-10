@@ -33,19 +33,19 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
         viewModel.onLoaded.observe(
             viewLifecycleOwner,
             Observer { block ->
-                binding.fragmentSearchWebView.blockImages(block ?: false)
+                binding.fragmentSearchWebView.setup(
+                    blockImages = block ?: false,
+                    actionUpdate = { url ->
+                        url?.let {
+                            binding.fragmentSearchEdittextUrl.setText(it)
+                        }
+                    },
+                    actionError = {
+                        //do some stuff if you get an error
+                    })
+
             }
         )
-
-        binding.fragmentSearchWebView.setup(
-            actionUpdate = { url ->
-                url?.let {
-                    binding.fragmentSearchEdittextUrl.setText(it)
-                }
-            },
-            actionError = {
-                //do some stuff if you get an error
-            })
 
         binding.fragmentSearchOpenPage.setOnClickListener {
             if (validData()) {
@@ -53,6 +53,10 @@ class SearchFragment : BaseFragment<SearchViewModel>() {
                 //add to history
                 viewModel.addToHistory(binding.fragmentSearchEdittextUrl.text.toString())
             }
+        }
+
+        binding.fragmentSearchBack.setOnClickListener {
+            binding.fragmentSearchWebView.tryToBack()
         }
     }
 

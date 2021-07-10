@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.net.http.SslError
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.webkit.*
 import android.widget.ProgressBar
@@ -26,11 +27,17 @@ class WebViewCustom @JvmOverloads constructor(
         addView(binding.root)
     }
 
-    fun setup(actionUpdate: (String?) -> Unit, actionError: () -> Unit) {
+    fun setup(blockImages: Boolean, actionUpdate: (String?) -> Unit, actionError: () -> Unit) {
         this.actionError = actionError
         this.actionUpdate = actionUpdate
         binding.customWebview.webViewClient =
-            Callback(binding.customWebviewLoading, binding.customWebview, actionError, actionUpdate)
+            Callback(
+                blockImages,
+                binding.customWebviewLoading,
+                binding.customWebview,
+                actionError,
+                actionUpdate
+            )
         binding.customWebview.addJavascriptInterface(WebAppInterface(context), NAME)
         binding.customWebview.settings.javaScriptEnabled = true
         binding.customWebview.settings.allowContentAccess = true
@@ -46,17 +53,14 @@ class WebViewCustom @JvmOverloads constructor(
         }
     }
 
-    fun navigateToUrl(url: String, headers: HashMap<String, String>? = null) {
-//        headers?.let {
-//            binding.customWebview.loadUrl(url, it)
-//        }?.run {
+    fun navigateToUrl(url: String) {
         binding.customWebview.loadUrl(url)
-//        }
     }
 
-    fun blockImages(block: Boolean) {
-//        var webViewClient = binding.customWebview.webViewClient as Callback
-//        webViewClient.setBlockIma(block)
+    fun tryToBack() {
+        if (binding.customWebview.canGoBack()) {
+            binding.customWebview.goBack()
+        }
     }
 
     private class WebAppInterface(
@@ -66,6 +70,7 @@ class WebViewCustom @JvmOverloads constructor(
     }
 
     private class Callback(
+        val blockImages: Boolean,
         val loadingCard: ProgressBar,
         val webView: WebView,
         val actionError: () -> Unit,
@@ -73,14 +78,9 @@ class WebViewCustom @JvmOverloads constructor(
     ) :
         WebViewClient() {
 
-        var blockImages = false
-
         override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler, er: SslError?) {
+            Log.d("WebviewCustom", "onReceivedSslError")
             handler.proceed()
-        }
-
-        fun setBlockIma(block: Boolean) {
-            this.blockImages = block
         }
 
         override fun shouldOverrideUrlLoading(
@@ -101,10 +101,13 @@ class WebViewCustom @JvmOverloads constructor(
             loadingCard.show(false)
             webView.show(true)
             actionUpdate.invoke(url)
-//            if(blockImages) {
-//                webView.loadUrl("javascript:(function(){ var imgs=document.getElementsByTagName('img');"+
-//                        "for(i=0;i<imgs.length;i++) { imgs[i].style.display='none'; } })()")
-//            }
+            if (blockImages) {
+                /*I don't know if this is the best approach to do it, I searched this command on internet!*/
+                webView.loadUrl(
+                    "javascript:(function(){ var imgs=document.getElementsByTagName('img');" +
+                            "for(i=0;i<imgs.length;i++) { imgs[i].style.display='none'; } })()"
+                )
+            }
         }
 
         override fun onReceivedError(
@@ -112,8 +115,7 @@ class WebViewCustom @JvmOverloads constructor(
             request: WebResourceRequest?,
             error: WebResourceError?
         ) {
-            webView.show(false)
-            loadingCard.show(false)
+            Log.d("WebviewCustom", "onReceivedError")
             actionError.invoke()
             super.onReceivedError(view, request, error)
         }
@@ -123,6 +125,7 @@ class WebViewCustom @JvmOverloads constructor(
             request: WebResourceRequest?,
             errorResponse: WebResourceResponse?
         ) {
+            Log.d("WebviewCustom", "onReceivedError")
             webView.show(false)
             loadingCard.show(false)
             actionError.invoke()

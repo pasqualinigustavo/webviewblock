@@ -5,4 +5,5 @@
 
     <!--Sizes-->
     <dimen name="default_height">45dp</dimen>
+    <dimen name="default_width">65dp</dimen>
 </resources>

@@ -7,18 +7,27 @@
     android:background="@color/white"
     android:fitsSystemWindows="true">
 
+    <Button
+        android:id="@+id/fragmentSearchBack"
+        style="@style/ButtonSmall"
+        android:layout_width="@dimen/default_width"
+        android:layout_height="@dimen/default_height"
+        android:text="@string/fragment_search_back"
+        android:textAllCaps="false"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/fragmentSearchTextInputUrl"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/fragmentSearchBack"
         app:layout_constraintRight_toLeftOf="@+id/fragmentSearchOpenPage"
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
             android:id="@+id/fragmentSearchEdittextUrl"
             style="@style/TextStyle"
-            android:text="https://www.google.com"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/fragment_search_hint" />
