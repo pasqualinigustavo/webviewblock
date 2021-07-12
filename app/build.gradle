@@ -108,11 +108,6 @@ dependencies {
     implementation deps.lifecycle.extensions
     implementation deps.lifecycle.java8
 
-    // RxJava
-    implementation deps.rx.android
-    implementation deps.rx.java
-    implementation deps.rx.kotlin
-
     kapt deps.glide.compiler
     implementation deps.glide.runtime
 

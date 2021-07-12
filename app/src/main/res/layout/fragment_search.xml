@@ -28,9 +28,8 @@
         <EditText
             android:id="@+id/fragmentSearchEdittextUrl"
             style="@style/TextStyle"
-            android:text="http://www.google.com"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:hint="@string/fragment_search_hint" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -48,7 +47,7 @@
     <com.webviewblock.components.WebViewCustom
         android:id="@+id/fragmentSearchWebView"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
