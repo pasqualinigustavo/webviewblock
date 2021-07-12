@@ -11,8 +11,6 @@ constructor(
 ) :
     ViewModel() {
 
-    val params = MutableLiveData<Serializable>()
-
     open fun onAttached() {
 
     }

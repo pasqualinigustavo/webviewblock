@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.webviewblock.di
+package com.webviewblock.di;
 
 /*
  * Copyright (C) 2018 The Android Open Source Project
@@ -31,41 +31,37 @@ package com.webviewblock.di
  * limitations under the License.
  */
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.webviewblock.presentation.ViewModelFactory
-import com.webviewblock.presentation.home.HomeActivityViewModel
-import com.webviewblock.presentation.search.SearchViewModel
-import com.webviewblock.presentation.settings.SettingsViewModel
-import dagger.Binds
-import dagger.Module
-import dagger.multibindings.IntoMap
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 
-@Suppress("unused")
+import com.webviewblock.presentation.ViewModelFactory;
+import com.webviewblock.presentation.home.HomeActivityViewModel;
+import com.webviewblock.presentation.search.SearchViewModel;
+import com.webviewblock.presentation.settings.SettingsViewModel;
+
+import dagger.Binds;
+import dagger.Module;
+import dagger.multibindings.IntoMap;
+
 @Module
-abstract class ViewModelModule {
+public abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(HomeActivityViewModel::class)
-    abstract fun bindHomeActivityViewModel(homeActivityViewModel: HomeActivityViewModel): ViewModel
+    @ViewModelKey(HomeActivityViewModel.class)
+    public abstract ViewModel bindHomeActivityViewModel(HomeActivityViewModel homeActivityViewModel);
 
     @Binds
     @IntoMap
-    @ViewModelKey(SearchViewModel::class)
-    abstract fun bindSearchViewModel(searchViewModel: SearchViewModel): ViewModel
+    @ViewModelKey(SearchViewModel.class)
+    public abstract ViewModel bindSearchViewModel(SearchViewModel searchViewModel);
 
     @Binds
     @IntoMap
-    @ViewModelKey(SettingsViewModel::class)
-    abstract fun bindSettingsViewModel(settingsViewModel: SettingsViewModel): ViewModel
-
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(WebviewViewModel::class)
-//    abstract fun bindWebviewViewModel(webviewViewModel: WebviewViewModel): ViewModel
+    @ViewModelKey(SettingsViewModel.class)
+    public abstract ViewModel bindSettingsViewModel(SettingsViewModel settingsViewModel);
 
     @Binds
-    abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+    public abstract ViewModelProvider.Factory bindViewModelFactory(ViewModelFactory factory);
 
 }

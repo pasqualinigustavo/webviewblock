@@ -40,7 +40,6 @@ abstract class BaseFragment<ViewModel : BaseViewModel> : Fragment(), Injectable 
         navController()?.let {
             viewModel.navigator.observeEvents(this, it)
         }
-        viewModel.params.value = arguments?.getSerializable(NavigationController.DATA_KEY)
         viewModel.onAttached()
     }
 

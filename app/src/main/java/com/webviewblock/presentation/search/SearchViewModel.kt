@@ -30,7 +30,7 @@ class SearchViewModel
     private fun getSettings() {
         historyList.clear()
         historyList.addAll(getSettingsUseCase.execute())
-        onLoaded.postValue(getSettingsUseCase.blockImagesPreference())
+        onLoaded.postValue(getSettingsUseCase.isBlockImagesPreference)
     }
 
     fun openSettingsPage() {

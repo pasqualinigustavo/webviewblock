@@ -31,28 +31,15 @@ abstract class Navigator(val sharedEvents: SharedEvents) {
 
     fun dispatchNavigationEvent(event: NavigationEvent) {
         navigationEvent.value =
-            NavigationEventData(event)
-    }
-
-    fun dispatchNavigationEvent(navigationEventData: NavigationEventData) {
-        navigationEvent.value = navigationEventData
-    }
-
-    fun dispatchNavigationEvent(event: NavigationEvent, data: Serializable) {
-        navigationEvent.value =
-            NavigationEventData(event, data)
+            NavigationEventData(event, null, null, null)
     }
 
     fun navigate(locationId: Int, navController: NavigationController, data: Serializable? = null) {
-        sharedEvents.navigationEvent.value = NavigationEventData(NavigationEvent.NOP)
+        sharedEvents.navigationEvent.value = NavigationEventData(NavigationEvent.NOP, null, null, null)
         locationId.takeIf { it != navController.currentId }
             ?.let {
                 navController.navigate(it, data)
             }
-    }
-
-    fun finish(navController: NavigationController): Boolean {
-        return navController.finish()
     }
 
     companion object {

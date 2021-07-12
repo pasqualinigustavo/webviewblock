@@ -28,6 +28,7 @@
         <EditText
             android:id="@+id/fragmentSearchEdittextUrl"
             style="@style/TextStyle"
+            android:text="http://www.google.com"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:hint="@string/fragment_search_hint" />
